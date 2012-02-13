@@ -1,0 +1,29 @@
+ICS (iCal) events to Remind
+===========================
+
+This is a (very) basic iCal to [Remind][remind] translator.  I wrote
+it because the ones that I could find did not work very well for my
+purposes; specifically, I want to have a program in my pipeline that I
+can use to 'open' .ics files from any mail client and append a line to
+my reminders.
+
+I've tested it with a number of the invitations that have been sent to
+me in the past, but there is definitely room for improvement.
+
+[remind]: http://www.roaringpenguin.com/products/remind
+
+Building
+--------
+
+Depending on what architecture you're building this for, it should be
+this simple on most of them:
+
+	cmake .
+	make
+
+The known good library requirements are [boost][boost] 1.47 and
+[libical][libical] version 0.46. Later or earlier versions should
+work, but these are the versions against which I developed.
+
+[boost]: http://www.boost.org
+[libical]: http://www.citadel.org/doku.php/documentation:featured_projects:libical

@@ -1,0 +1,8 @@
+- Add an install target
+
+- Allow for command-line formats
+
+- Actually iterate through components to collect all events
+
+- Create a UI (curses/gtk/qt/etc) wrapper to confirm or edit the line
+  before it's appended to a reminders file
