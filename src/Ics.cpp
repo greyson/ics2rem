@@ -3,7 +3,19 @@
 #include "IcalComponent.hpp"
 #include "IcalParser.hpp"
 
+#include <iomanip>
+#include <sstream>
+
 namespace fs = boost::filesystem;
+
+namespace {
+   char const * const MONTHS[] = {
+      "Jan", "Feb", "Mar",
+      "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep",
+      "Oct", "Nov", "Dec",
+   };
+}
 
 char * read_stream( char * s, std::size_t size, void * d )
 {
@@ -35,9 +47,67 @@ void parseFile( fs::path const & path )
 
       if( c )
       {
-         std::string temp = c.asIcalString_r();
+         /*
+         std::string temp = c.getInner().asIcalString();
          std::cout << temp << std::endl
                    << "---------------" << std::endl;
+         */
+
+         ical::Time dtstart = c.getDTStart();
+         std::cout << "REM " << dtstart.day
+                   << " " << MONTHS[ dtstart.month - 1 ]
+                   << " " << dtstart.year;
+
+         ical::Duration duration = c.getDuration();
+         if( dtstart.isDate() )
+         {
+            if( ! duration.isNullDuration() )
+            {
+               std::cout << " *1";
+            }
+         }
+
+         // Include the time if it's a date-time (aka, not date)
+         if( ! dtstart.isDate() )
+         {
+            std::cout << " AT " << dtstart.hour << ':';
+            if( dtstart.minute < 10 )
+               std::cout << '0';
+            std::cout << dtstart.minute;
+         }
+
+         if( ! duration.isNullDuration() )
+         {
+            int all = duration.asInt();
+            if( dtstart.isDate() )
+            {
+               ical::Time dtend = c.getDTEnd();
+               std::cout << " UNTIL "
+                         << dtend.day << ' '
+                         << MONTHS[ dtend.month - 1 ] << ' '
+                         << dtend.year;
+            }
+            else
+            {
+               int seconds = all % 60;
+               int minutes = all / 60 % 60;
+               int hours = all / 60 / 60;
+               std::cout << " DURATION " << hours << ':';
+               if( minutes < 10 )
+                  std::cout << '0';
+               std::cout << minutes;
+            }
+         }
+
+         // Add the summary field as the message
+         std::cout << " MSG %\"" << c.getSummary() << "%\"";
+
+         if( ! dtstart.isDate() )
+         {
+            std::cout << " %3";
+         }
+
+         std::cout << std::endl;
       }
    } while( line != NULL );
 }
