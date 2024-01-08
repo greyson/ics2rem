@@ -1,6 +1,8 @@
 #ifndef __ICAL_DURATION_HPP__
 #define __ICAL_DURATION_HPP__
 
+#include <string>
+
 extern "C" {
 #include <libical/icalduration.h>
 }
