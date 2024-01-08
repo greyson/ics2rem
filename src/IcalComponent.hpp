@@ -3,6 +3,8 @@
 
 #include "IcalDuration.hpp"
 #include "IcalTime.hpp"
+#include <string>
+#include <boost/shared_ptr.hpp>
 
 extern "C" {
 #include <libical/icalcomponent.h>

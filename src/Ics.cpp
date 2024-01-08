@@ -4,7 +4,9 @@
 #include "IcalParser.hpp"
 
 #include <iomanip>
+#include <iostream>
 #include <sstream>
+#include <memory>
 
 namespace fs = boost::filesystem;
 
